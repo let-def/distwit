@@ -1,0 +1,7 @@
+description = "Distribute witnesses of extensible types / exceptions"
+version = "0.1.0"
+archive(byte) = "distwit.cma"
+plugin(byte) = "distwit.cma"
+archive(native) = "distwit.cmxa"
+plugin(native) = "distwit.cmxs"
+exists_if = "distwit.cma"

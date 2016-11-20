@@ -1,0 +1,19 @@
+opam-version: "1.2"
+name: "distwit"
+version: "0.1.0"
+
+maintainer:  "Frédéric Bour <frederic.bour@lakaban.net>"
+authors:     "Frédéric Bour <frederic.bour@lakaban.net>"
+homepage:    "https://github.com/let-def/distwit"
+bug-reports: "https://github.com/let-def/distwit/issues"
+dev-repo:    "https://github.com/let-def/distwit.git"
+doc:         "https://let-def.github.io/distwit/"
+
+license: "ISC"
+build: ["ocaml" "pkg/pkg.ml" "build" "--pinned" "%{pinned}%"]
+available: [ ocaml-version >= "4.03" & ocaml-version < "4.05" ]
+
+depends: [
+  "ocamlfind" {build}
+  "topkg"     {build}
+]
