@@ -44,3 +44,38 @@ between trusted processes.
 Furthermore, symbols registered by user (via [register] function) should only
 be used with the exact same constructor -- otherwise incorrect equalities are
 generated.
+
+Example
+=======
+
+An example using [Uuidm](http://erratique.ch/software/uuidm) as a symbol generator:
+
+```ocaml
+module W = Distwit.Make_unsafe(struct
+    type t = Uuidm.t
+    let equal = Uuidm.equal
+    let hash = Hashtbl.hash
+
+    let fresh () = Uuidm.v5 Uuidm.nil "distwit"
+  end)
+
+let roundtrip (x : 'a) : 'a =
+  Marshal.from_string (Marshal.to_string x []) 0
+
+let exn = Failure "..."
+
+let () = match roundtrip exn with
+  | Failure _ ->
+    prerr_endline "marshalling preserved identity, that's unexpected!";
+    assert false
+  | _ ->
+    prerr_endline "marshalling lost identity";
+    ()
+
+let () = match W.unwrap (roundtrip (W.wrap exn)) with
+  | Failure _ ->
+    prerr_endline "distwit recovered identity"
+  | _ ->
+    prerr_endline "distwit didn't recover identity, that's wrong!";
+    assert false
+```
